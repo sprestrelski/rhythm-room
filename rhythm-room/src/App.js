@@ -4,6 +4,8 @@ import { Container, Button} from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 import Navbar from './components/navbar';
+import Footer from './components/footer';
+
 
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -23,6 +25,7 @@ function App() {
         <Route path="/about" component={AboutPage}/>
         <Route path="/dashboard" component={Dashboard}/>
       </Switch>
+      <Footer/>
     </Router>
   );
 }

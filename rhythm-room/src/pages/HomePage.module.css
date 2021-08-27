@@ -1,0 +1,52 @@
+.parent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.box {
+    flex: 0 1 20rem;
+    margin: 50px;
+}
+
+h1 {
+    padding-bottom: 1.5rem;
+    font-weight: 600 !important;
+}
+
+.numberCircle {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    padding: 8px;
+    background-color: #C594FE;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    margin: 2rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.section2 p {
+    text-align: center !important;
+}
+
+.heading {
+    text-align: center;
+    padding: 50px;
+}
+
+.section2{
+    background-color: #EFEFEF;
+    font-size: 1.5rem;
+}
+
+.section3{
+    background-color: #322C3A;
+    color: white;
+}
+.section3 p {
+    text-align: left !important;
+    padding-bottom: 1rem;
+}
