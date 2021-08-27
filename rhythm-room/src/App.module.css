@@ -3,3 +3,9 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 }
+
+.button {
+    background-color: #C594FE !important;
+    border-color: #C594FE !important;
+    border-radius: .5rem !important;
+}
