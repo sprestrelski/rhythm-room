@@ -14,7 +14,13 @@ class Dashboard extends React.Component {
       },
     };
 
-    return <YouTube videoId="2g811Eo7K8U" opts={opts} onReady={this._onReady} />;
+    const videoId = "2g811Eo7K8U"
+
+    return (
+      <div>
+        <YouTube videoId={videoId} opts={opts} onReady={this._onReady} />
+      </div>
+    );
   }
 
   _onReady(event) {
@@ -67,7 +73,7 @@ function Dashboard() {
 
       </Container>
     </div>
-    
+
   );
 }
 
