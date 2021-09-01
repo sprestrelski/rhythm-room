@@ -1,7 +1,7 @@
 import React from "react";
 import YouTube from "react-youtube";
-import Modal from "react-modal";
 import { Container, Button} from 'react-bootstrap';
+var search = require('youtube-search');
 
 const modalStyles = {
   content: {
@@ -16,19 +16,38 @@ const modalStyles = {
 
 // Render function for Prismic headless CMS pages
 function Dashboard() {
-  const [modalIsOpen, setModalIsOpen] = React.useState(false);
-  const [videoUrl, setVideoUrl] = React.useState("");
+  var [videoUrl, setVideoUrl] = React.useState("");
+  var [videoSearch, searchVideoUrl] = React.useState("")
   let videoCode;
   if (videoUrl) {
     try{
       videoCode = videoUrl.split("v=")[1].split("&")[0];
-      console.log("videoURL: " + videoCode);
     }
     catch (error){
-      videoCode = videoUrl;
-      console.log("ur BAD");
     }
     
+  }
+
+  function searchYT(){
+    if (videoSearch){
+
+      var searchOpts = {
+        maxResults: 5,
+        key: "AIzaSyDCylwwLB9f5u6qNSbiTTheE-FPdSB2FVc"
+      };
+
+      search(videoSearch, searchOpts, function(err, results, pgInfo) {
+        if(err) return console.log(err);
+
+        var videoID = String(results[0].id);
+        //console.log("in function: " + videoID);
+
+        setVideoUrl("https://www.youtube.com/watch?v=" + videoID);
+        return videoID;
+
+      });
+    }
+    // console.log("video id: " + videoCode + "\nvideoUrl: " + videoUrl);
   }
 
   const checkElapsedTime = (e) => {
@@ -54,7 +73,12 @@ function Dashboard() {
         <div>
         <label htmlFor="songURL">Enter Song URL: </label>
         <input id="songURL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
-        
+        <form action="#" onSubmit={(e) => {searchYT(); e.preventDefault();}}>
+          <label htmlFor="songSearch">Search for a song: </label>
+          <input type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)}/>
+          <input type="submit"/>
+        </form>
+          
           <div>
             <YouTube
               videoId={videoCode}
