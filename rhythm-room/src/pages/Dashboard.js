@@ -1,6 +1,6 @@
 import React from "react";
 import YouTube from "react-youtube";
-import { Container, Button} from 'react-bootstrap';
+import { Container, Button, Form, Row, Col, InputGroup} from 'react-bootstrap';
 var search = require('youtube-search');
 
 const modalStyles = {
@@ -20,24 +20,24 @@ function Dashboard() {
   var [videoSearch, searchVideoUrl] = React.useState("")
   let videoCode;
   if (videoUrl) {
-    try{
+    try {
       videoCode = videoUrl.split("v=")[1].split("&")[0];
     }
-    catch (error){
+    catch (error) {
     }
-    
+
   }
 
-  function searchYT(){
-    if (videoSearch){
+  function searchYT() {
+    if (videoSearch) {
 
       var searchOpts = {
         maxResults: 5,
         key: "AIzaSyDCylwwLB9f5u6qNSbiTTheE-FPdSB2FVc"
       };
 
-      search(videoSearch, searchOpts, function(err, results, pgInfo) {
-        if(err) return console.log(err);
+      search(videoSearch, searchOpts, function (err, results, pgInfo) {
+        if (err) return console.log(err);
 
         var videoID = String(results[0].id);
         //console.log("in function: " + videoID);
@@ -71,14 +71,24 @@ function Dashboard() {
           <div></div>
         </div>
         <div>
-        <label htmlFor="songURL">Enter Song URL: </label>
-        <input id="songURL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
-        <form action="#" onSubmit={(e) => {searchYT(); e.preventDefault();}}>
-          <label htmlFor="songSearch">Search for a song: </label>
-          <input type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)}/>
-          <input type="submit"/>
-        </form>
-          
+          <Row className="mb-5">
+            <Col sm={5} >
+              <Form.Label htmlFor="songURL">Enter Song URL: </Form.Label>
+              <Form.Control id="songURL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
+            </Col>
+            <Col sm={5}>
+              <form action="#" onSubmit={(e) => { searchYT(); e.preventDefault(); }}>
+                <Form.Group>
+                  <Form.Label htmlFor="songSearch">Search for a song: </Form.Label>
+                  <InputGroup hasValidation>
+                    <Form.Control type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)} />
+                    <Button variant="primary" type="submit" >Submit</Button>
+                  </InputGroup>
+                </Form.Group>
+              </form>
+            </Col>
+          </Row>
+
           <div>
             <YouTube
               videoId={videoCode}
