@@ -1,0 +1,26 @@
+.parent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.box {
+    flex: 0 1 30rem;
+    margin: 50px;
+}
+
+.emoji {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+
+.emoji li {
+    padding-left: 1rem;
+    text-indent: -0.7rem;
+}
+
+.emoji li::before {
+    content: "💜 ";
+}
