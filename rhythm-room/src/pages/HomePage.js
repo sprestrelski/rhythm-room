@@ -40,7 +40,7 @@ class App extends React.Component {
           <Container>
             <div className={styles.parent}>
               <div className={styles.box}>
-                <img src={music_design}></img>
+                <img src={music_design} alt="person listening to music"></img>
               </div>
               <div className={styles.box}>
                 <h1>Listen with your friends</h1>
@@ -63,21 +63,21 @@ class App extends React.Component {
             <h1 className={styles.heading}>How it works</h1>
             <div className={styles.parent}>
               <div className={styles.box}>
-                <img src={marshmello}></img>
+                <img src={marshmello} alt="marshmello"></img>
                 <div className={styles.numberCircle}>
                   1
                 </div>
                 <p>Play your favorite artists</p>
               </div>
               <div className={styles.box}>
-                <img src={friends}></img>
+                <img src={friends} alt="two friends sitting underneath a tree"></img>
                 <div className={styles.numberCircle}>
                   2
                 </div>
                 <p>Add your friends</p>
               </div>
               <div className={styles.box}>
-                <img src={cat}></img>
+                <img src={cat} alt="cat listening to music with headphones"></img>
                 <div className={styles.numberCircle}>
                   3
                 </div>
@@ -90,7 +90,7 @@ class App extends React.Component {
           <Container>
             <div className={styles.parent}>
               <div className={styles.box}>
-                <img src={coding}></img>
+                <img src={coding} alt="two people sitting in front of a computer screen"></img>
               </div>
               <div className={styles.box}>
                 <h1>About</h1>
