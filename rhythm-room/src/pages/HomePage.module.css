@@ -50,3 +50,12 @@ h1 {
     text-align: left !important;
     padding-bottom: 1rem;
 }
+
+button {
+    background-color: #C594FE !important;
+    border-color: #C594FE !important;
+    border-radius: .5rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    color: white !important;
+}
