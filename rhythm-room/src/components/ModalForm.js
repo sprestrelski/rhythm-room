@@ -3,6 +3,8 @@
 import React, { Component } from "react";
 
 import { Form, Modal, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 
 export default class ModalForm extends Component {
 
@@ -11,17 +13,17 @@ export default class ModalForm extends Component {
     this.state = { name: null, roomName: null }
   }
 
-  handleSubmit = (event) => {
+  /*handleSubmit = (event) => {
     console.log(this.state.roomName)
     event.preventDefault();
     alert("You are submitting " + this.state.name + this.state.roomName);
-  }
+  }*/
 
   handleChangeName = (event) => {
-    this.setState({name: event.target.value});
+    this.setState({ name: event.target.value });
   }
   handleChangeRoom = (event) => {
-    this.setState({roomName: event.target.value});
+    this.setState({ roomName: event.target.value });
   }
 
   render() {
@@ -42,9 +44,11 @@ export default class ModalForm extends Component {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button type="submit" onClick={this.handleSubmit}>
-              Create Room
-            </Button>
+            <Link onClick={event => (!this.state.name || !this.state.roomName) ? event.preventDefault() : null} to={`/dashboard?name=${this.state.name}&room=${this.state.roomName}`}>
+              <Button type="submit" onClick={this.handleSubmit}>
+                Create Room
+              </Button>
+            </Link>
           </Modal.Footer>
         </Modal>
       </div>

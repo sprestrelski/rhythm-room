@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import queryString from 'query-string';
+import io from 'socket.io-client';
+
+import styles from './Dashboard.module.css'
 import YouTube from "react-youtube";
 import { Container, Button, Form, Row, Col, InputGroup} from 'react-bootstrap';
 var search = require('youtube-search');
@@ -14,8 +18,32 @@ const modalStyles = {
   }
 };
 
+let socket;
+
 // Render function for Prismic headless CMS pages
 function Dashboard() {
+  const [name, setName] = useState('');
+  const [room, setRoom] = useState('');
+  const ENDPOINT = 'localhost:5000';
+
+  useEffect(() => {
+    const { name, room } = queryString.parse(location.search)
+    console.log(name, room);
+    socket =io(ENDPOINT);
+    setName(name);
+    setRoom(room);
+
+    socket.emit('join', { name, room }, () => {
+
+    });
+
+    return () => {
+      socket.emit('disconnect');
+      socket.off();
+    }
+  }, [ENDPOINT, location.search])
+
+
   var [videoUrl, setVideoUrl] = React.useState("");
   var [videoSearch, searchVideoUrl] = React.useState("")
   let videoCode;
@@ -74,15 +102,15 @@ function Dashboard() {
           <Row className="mb-5">
             <Col sm={5} >
               <Form.Label htmlFor="songURL">Enter Song URL: </Form.Label>
-              <Form.Control id="songURL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
+              <Form.Control placeholder="Song URL" id="songURL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
             </Col>
             <Col sm={5}>
               <form action="#" onSubmit={(e) => { searchYT(); e.preventDefault(); }}>
                 <Form.Group>
                   <Form.Label htmlFor="songSearch">Search for a song: </Form.Label>
                   <InputGroup hasValidation>
-                    <Form.Control type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)} />
-                    <Button variant="primary" type="submit" >Submit</Button>
+                    <Form.Control placeholder="Song name" className={styles.leftInput} type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)} />
+                    <Button className={styles.rightInput} variant="primary" type="submit" >Submit</Button>
                   </InputGroup>
                 </Form.Group>
               </form>
