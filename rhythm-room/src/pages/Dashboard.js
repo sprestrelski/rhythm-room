@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
 import io from 'socket.io-client';
-import ScrollToBottom from 'react-scroll-to-bottom';
 
 import styles from './Dashboard.module.css'
 import YouTube from "react-youtube";
@@ -116,7 +115,7 @@ function Dashboard() {
   function searchYT() {
     var searchOpts = {
       maxResults: 1,
-      key: "AIzaSyDuQmcaS8-60vzmJqzB-Juf5Rz-PL4HXOk"
+      key: "AIzaSyDfSmuXOfLmNURbPDIcgV5UGvrZhEZtIKo"
     };
 
     search(videoSearch, searchOpts, function (err, results, pgInfo) {
