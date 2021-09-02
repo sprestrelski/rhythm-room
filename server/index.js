@@ -5,6 +5,9 @@ const router = require('./router');
 const app = express();
 const path = require('path')
 
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.static(buildPath));
+
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
@@ -62,11 +65,5 @@ io.on('connection', (socket) => {
 });
 
 app.use(router);
-app.use(express.static(path.join(__dirname, '../rhythm-room/public', 'index.html')));
-
-// Anything that doesn't match the above, send back index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../rhythm-room/public', 'index.html'))
-})
 
 server.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
