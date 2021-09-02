@@ -13,11 +13,11 @@ function AboutPage() {
       <Container>
         <div className={styles.parent}>
           <div className={styles.box}>
-            <img src={programming_sam}></img>
+            <img src={programming_sam} alt="girl sitting in front of monitors"></img>
           </div>
           <div className={styles.box}>
             <h1>About Us</h1>
-            <p>Rhythm Room is a project thought up by Sam and Jeremy. While we both loved listening to music, there is not yet a service that allows you to listen to music with other people. Thusly, we made Rhythm Room.</p>
+            <p>Rhythm Room is a project thought up by Sam and Jeremy. While we both loved listening to music, there is not yet a service that allows you to listen to music with other people without external platforms or subscriptions. Thus, we made Rhythm Room.</p>
             <h1 className={"pt-4"}>Our Stack</h1>
             <ul className={styles.emoji}>
               <li className={styles.emoji}> Application Framework: 			Express </li>
@@ -41,7 +41,7 @@ function AboutPage() {
             </ul>
           </div>
           <div className={styles.box}>
-            <img src={programming_jeremy}></img>
+            <img src={programming_jeremy} alt="guy sitting in front of monitors"></img>
           </div>
         </div>
       </Container>

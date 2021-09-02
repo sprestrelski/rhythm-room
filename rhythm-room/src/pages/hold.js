@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from "react";
-import queryString from 'query-string';
-import io from 'socket.io-client';
-
-import styles from './Dashboard.module.css'
+import React from "react";
 import YouTube from "react-youtube";
 import { Container, Button, Form, Row, Col, InputGroup} from 'react-bootstrap';
 var search = require('youtube-search');
@@ -19,48 +15,30 @@ const modalStyles = {
   }
 };
 
-let socket;
-
 // reference for connecting react and youtube https://www.freecodecamp.org/news/use-the-youtube-iframe-api-in-react/
 // Render function for Prismic headless CMS pages
 function Dashboard() {
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
-  const ENDPOINT = 'localhost:5000';
-
-  useEffect(() => {
-    // eslint-disable-next-line no-restricted-globals
-    const { name, room } = queryString.parse(location.search)
-    console.log(name, room);
-    socket =io(ENDPOINT);
-    setName(name);
-    setRoom(room);
-
-    socket.emit('join', { name, room }, () => {
-
-    });
-
-    return () => {
-      socket.off();
-    }
-    // eslint-disable-next-line no-restricted-globals
-  }, [ENDPOINT, location.search])
-
-
   var [videoUrl, setVideoUrl] = React.useState("");
   var [videoSearch, searchVideoUrl] = React.useState("")
+
   let videoCode;
   if (videoUrl) {
-    try {
+    try{
       videoCode = videoUrl.split("v=")[1].split("&")[0];
       //queueList.push(videoUrl.split("v=")[1].split("&")[0]);
     }
-    catch (error) {
+    catch (error){
     }
-
+    
   }
 
-  function searchYT() {
+  
+  /*if (queueList.length != 0){
+    setVideoUrl("https://www.youtube.com/watch?v=" + queueList[0]);
+    console.log(queueList);
+  }*/
+
+  function searchYT(){
     var searchOpts = {
       maxResults: 1,
       key: "AIzaSyAMmBzTJ-bqXErNLBuIU6TbSrvYV7RjRrs"
@@ -117,24 +95,25 @@ function Dashboard() {
           <div></div>
         </div>
         <div>
-          <Row className="mb-5">
+        <Row className="mb-5">
             <Col sm={5} >
               <Form.Label htmlFor="songURL">Enter Song URL: </Form.Label>
-              <Form.Control placeholder="Song URL" id="songURL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
+              <Form.Control id="songURL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
             </Col>
             <Col sm={5}>
               <form action="#" onSubmit={(e) => { searchYT(); e.preventDefault(); }}>
                 <Form.Group>
                   <Form.Label htmlFor="songSearch">Search for a song: </Form.Label>
                   <InputGroup hasValidation>
-                    <Form.Control placeholder="Song name" className={styles.leftInput} type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)} />
-                    <Button className={styles.rightInput} variant="primary" type="submit" >Add to Queue</Button>
+                    <Form.Control type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)} />
+                    <Button variant="primary" type="submit" >Add to Queue</Button>
                   </InputGroup>
                 </Form.Group>
               </form>
             </Col>
           </Row>
 
+          
           <div>
             <YouTube
               videoId={videoCode}
