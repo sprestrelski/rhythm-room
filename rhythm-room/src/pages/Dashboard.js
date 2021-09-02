@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
 import io from 'socket.io-client';
+import ScrollToBottom from 'react-scroll-to-bottom';
 
 import styles from './Dashboard.module.css'
 import YouTube from "react-youtube";
-import { Container, Button, Form, Row, Col, InputGroup} from 'react-bootstrap';
+import { Container, Button, Form, Row, Col, InputGroup, Card, ListGroup } from 'react-bootstrap';
 var search = require('youtube-search');
 var queueList = [];
 
@@ -26,13 +27,18 @@ let socket;
 function Dashboard() {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [users, setUsers] = useState([]);
+
+
   const ENDPOINT = 'localhost:5000';
 
   useEffect(() => {
     // eslint-disable-next-line no-restricted-globals
     const { name, room } = queryString.parse(location.search)
     console.log(name, room);
-    socket =io(ENDPOINT);
+    socket = io(ENDPOINT);
     setName(name);
     setRoom(room);
 
@@ -46,7 +52,26 @@ function Dashboard() {
     // eslint-disable-next-line no-restricted-globals
   }, [ENDPOINT, location.search])
 
+  useEffect(() => {
+    socket.on('message', (message) => {
+      setMessages([...messages, message]);
+    })
+    socket.on("roomData", ({ users }) => {
+      setUsers(users);
+    });
+    socket.on("videoUrl", (videoUrl) => {
+      setVideoUrl(videoUrl);
+    });
+  }, []);
 
+  console.log(users)
+
+  const sendMessage = (event) => {
+    if (message) {
+      event.preventDefault();
+      socket.emit('sendMessage', message, () => setMessage(''));
+    }
+  }
   var [videoUrl, setVideoUrl] = React.useState("");
   var [videoSearch, searchVideoUrl] = React.useState("")
   let videoCode;
@@ -66,16 +91,17 @@ function Dashboard() {
       key: "AIzaSyAMmBzTJ-bqXErNLBuIU6TbSrvYV7RjRrs"
     };
 
-    search(videoSearch, searchOpts, function(err, results, pgInfo) {
-      if(err) return console.log(err);
+    search(videoSearch, searchOpts, function (err, results, pgInfo) {
+      if (err) return console.log(err);
 
       var videoID = String(results[0].id);
-      
-      if (queueList.length == 0){
+
+      if (queueList.length == 0) {
         setVideoUrl("https://www.youtube.com/watch?v=" + videoID);
+        socket.emit('videoUrl', "https://www.youtube.com/watch?v=" + videoID, () => setVideoUrl("https://www.youtube.com/watch?v=" + videoID))
         queueList.push(videoID);
         console.log("queueLength:" + queueList.length);
-      }else{
+      } else {
         queueList.push(videoID);
       }
       //return videoID;
@@ -89,14 +115,16 @@ function Dashboard() {
     console.log("playerState: " + e.target.playerInfo.playerState);
     const duration = e.target.getDuration();
     const currentTime = e.target.getCurrentTime();
-    if (e.target.getPlayerState() == 0){
+    if (e.target.getPlayerState() == 0) {
       console.log("song ended");
       queueList.shift()
       try {
         videoSearch = queueList[0];
         console.log(videoSearch);
         setVideoUrl("https://www.youtube.com/watch?v=" + videoSearch);
-      } catch (error){
+        socket.emit('videoUrl', "https://www.youtube.com/watch?v=" + videoSearch, () => setVideoUrl("https://www.youtube.com/watch?v=" + videoSearch))
+        console.log('hi im here')
+      } catch (error) {
         console.log("yikes bro");
       }
     }
@@ -113,14 +141,23 @@ function Dashboard() {
     <div>
       <Container>
         <div>
-          <h1>Dashboard</h1>
-          <div></div>
+          <h1>Rhythm Room: #{room}</h1>
         </div>
+
+        <Card className="mb-4">
+          <Card.Body>
+            <Card.Title><strong>Listeners</strong></Card.Title>
+            <ListGroup variant="flush">
+            {users.map((user, i) => <ListGroup.Item>{user.name}</ListGroup.Item>)}
+            </ListGroup>
+          </Card.Body>
+        </Card>
+
         <div>
           <Row className="mb-5">
             <Col sm={5} >
               <Form.Label htmlFor="songURL">Enter Song URL: </Form.Label>
-              <Form.Control placeholder="Song URL" id="songURL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
+              <Form.Control placeholder="Song URL" id="songURL" value={videoUrl} onChange={(e) => {setVideoUrl(e.target.value); socket.emit('videoUrl', e.target.value, () => setVideoUrl(e.target.value))}}/>
             </Col>
             <Col sm={5}>
               <form action="#" onSubmit={(e) => { searchYT(); e.preventDefault(); }}>
