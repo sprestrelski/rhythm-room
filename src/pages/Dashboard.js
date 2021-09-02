@@ -216,10 +216,6 @@ function Dashboard() {
           </div>
         </div>
 
-        <h1>Queue</h1>
-        <ul>
-          {queueList.map(song => <li>{song}</li>)}
-        </ul>
       </Container>
     </div>
   );
@@ -228,6 +224,10 @@ function Dashboard() {
 export default Dashboard;
 
 /*
+        <h1>Queue</h1>
+        <ul>
+          {queueList.map(song => <li>{song}</li>)}
+        </ul>
           {queueList.map((song, index) => {
             return(
               <li>
