@@ -60,7 +60,7 @@ function Dashboard() {
   const [users, setUsers] = useState([]);
 
 
-  const ENDPOINT = 'localhost:5000';
+  const ENDPOINT = '';
 
   useEffect(() => {
     // eslint-disable-next-line no-restricted-globals
