@@ -8,6 +8,7 @@ import YouTube from "react-youtube";
 import { Container, Button, Form, Row, Col, InputGroup, Card, ListGroup } from 'react-bootstrap';
 var search = require('youtube-search');
 var queueList = [];
+var queueExtended = [];
 
 const modalStyles = {
   content: {
@@ -23,6 +24,34 @@ const modalStyles = {
 let socket;
 
 // reference for connecting react and youtube https://www.freecodecamp.org/news/use-the-youtube-iframe-api-in-react/
+/*
+  Sample results output
+  channelId: "UCuAXFkgsw1L7xaCfnd5JJOw"
+  channelTitle: "Rick Astley"
+  description: "Rick Astley's official music video for “Never Gonna Give You Up” Subscribe to the official Rick Astley YouTube channel: https://RickAstley.lnk.to/YTSubID Follow ..."
+  id: "dQw4w9WgXcQ"
+  kind: "youtube#video"
+  link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  publishedAt: "2009-10-25T06:57:33Z"
+  thumbnails: {default: {…}, medium: {…}, high: {…}}
+  title: "Rick Astley - Never Gonna Give You Up
+
+  Sample results converted to array
+  0: "DYCEXg4_lCM"
+  1: "https://www.youtube.com/watch?v=DYCEXg4_lCM"
+  2: "youtube#video"
+  3: "2021-06-21T06:30:02Z"
+  4: "UCgPClNr5VSYC3syrDUIlzLw"
+  5: "Adult Swim"
+  6: "FULL EPISODE | Rick and Morty Season 5 Premiere: Mort Dinner Rick Andre | adult swim"
+  7: "Big man coming for dinner, broh. Better check the booze. Watch the full season 5 premiere here, and catch all-new episodes of Rick and Morty Sundays at 11pm ..."
+  8:
+  default: {url: "https://i.ytimg.com/vi/DYCEXg4_lCM/default.jpg", width: 120, height: 90}
+  high: {url: "https://i.ytimg.com/vi/DYCEXg4_lCM/hqdefault.jpg", width: 480, height: 360}
+  medium: {url: "https://i.ytimg.com/vi/DYCEXg4_lCM/mqdefault.jpg", width: 320, height: 180}
+
+*/
+
 // Render function for Prismic headless CMS pages
 function Dashboard() {
   const [name, setName] = useState('');
@@ -78,48 +107,51 @@ function Dashboard() {
   if (videoUrl) {
     try {
       videoCode = videoUrl.split("v=")[1].split("&")[0];
-      //queueList.push(videoUrl.split("v=")[1].split("&")[0]);
     }
-    catch (error) {
-    }
+    catch (error) {}
 
   }
 
+  // uses youtube-search to grab the first search result from youtube for the query
   function searchYT() {
     var searchOpts = {
       maxResults: 1,
-      key: "AIzaSyAMmBzTJ-bqXErNLBuIU6TbSrvYV7RjRrs"
+      key: "AIzaSyDuQmcaS8-60vzmJqzB-Juf5Rz-PL4HXOk"
     };
 
     search(videoSearch, searchOpts, function (err, results, pgInfo) {
       if (err) return console.log(err);
 
       var videoID = String(results[0].id);
-
-      if (queueList.length == 0) {
+      console.log(results);
+      
+      // if queue list doesn't have songs in it, set the url directly to the playing video; otherwise, add it to the queue
+      if (queueList.length == 0){
         setVideoUrl("https://www.youtube.com/watch?v=" + videoID);
         socket.emit('videoUrl', "https://www.youtube.com/watch?v=" + videoID, () => setVideoUrl("https://www.youtube.com/watch?v=" + videoID))
         queueList.push(videoID);
-        console.log("queueLength:" + queueList.length);
-      } else {
+        //queueExtended.push(Object.values(results[0]));
+        //console.log("queueLength:" + queueList.length);
+      }else{
+        //queueList.push(Object.values(results[0]));
         queueList.push(videoID);
       }
-      //return videoID;
 
     });
-    //console.log("video id: " + videoCode + "\nvideoUrl: " + videoUrl);
-    console.log("queueLength: OUTSIDE " + queueList.length);
   }
 
+  // check if the video has finished
   const checkElapsedTime = (e) => {
-    console.log("playerState: " + e.target.playerInfo.playerState);
+    //console.log("playerState: " + e.target.playerInfo.playerState);
     const duration = e.target.getDuration();
     const currentTime = e.target.getCurrentTime();
     if (e.target.getPlayerState() == 0) {
       console.log("song ended");
       queueList.shift()
       try {
+        // change the currently playing video to the next one in the list. if there is none, oh well
         videoSearch = queueList[0];
+        //videoSearch = queueList[0][0];
         console.log(videoSearch);
         setVideoUrl("https://www.youtube.com/watch?v=" + videoSearch);
         socket.emit('videoUrl', "https://www.youtube.com/watch?v=" + videoSearch, () => setVideoUrl("https://www.youtube.com/watch?v=" + videoSearch))
@@ -130,10 +162,13 @@ function Dashboard() {
     }
   };
 
+  // PARAMETERS FOR THE IFRAME
   const opts = {
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
-      autoplay: 1
+      autoplay: 1,
+      width: 560,
+      height: 315
     }
   };
 
@@ -172,18 +207,36 @@ function Dashboard() {
             </Col>
           </Row>
 
-          <div>
+          <div className="responsive">
             <YouTube
               videoId={videoCode}
-              containerClassName="embed embed-youtube"
+              containerClassName="embed-youtube"
               onStateChange={(e) => checkElapsedTime(e)}
               opts={opts}
             />
           </div>
         </div>
+
+        <h1>Queue</h1>
+        <ul>
+          {queueList.map(song => <li>{song}</li>)}
+        </ul>
       </Container>
     </div>
   );
 }
 
 export default Dashboard;
+
+/*
+          {queueList.map((song, index) => {
+            return(
+              <li>
+                {song.map((songParams, sIndex) =>{
+                return <li>{song}</li>;
+              })}
+              </li>
+              
+            );
+          })}
+*/

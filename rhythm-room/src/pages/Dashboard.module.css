@@ -5,3 +5,12 @@
 .rightInput {
     border-radius: 0px .5rem .5rem 0px !important;
 }
+
+.responsive{
+    height:100%;
+}
+
+.embed-youtube iframe{
+    width:100%;
+    height:100%;
+}
