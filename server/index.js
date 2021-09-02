@@ -3,13 +3,13 @@ const http = require('http');
 const PORT = process.env.PORT || 5000
 const router = require('./router');
 const app = express();
+const path = require('path')
+
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.static(buildPath));
+
 const server = http.createServer(app);
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
+const io = require('socket.io')(server);
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
 
