@@ -4,7 +4,8 @@ import io from 'socket.io-client';
 
 import styles from './Dashboard.module.css'
 import YouTube from "react-youtube";
-import { Container, Button, Form, Row, Col, InputGroup, Card, ListGroup } from 'react-bootstrap';
+import { Container, Button, Form, Row, Col, InputGroup, Card, ListGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { BlockList } from "net";
 var search = require('youtube-search');
 var queueList = [];
 var queueExtended = [];
@@ -107,7 +108,7 @@ function Dashboard() {
     try {
       videoCode = videoUrl.split("v=")[1].split("&")[0];
     }
-    catch (error) {}
+    catch (error) { }
 
   }
 
@@ -123,15 +124,15 @@ function Dashboard() {
 
       var videoID = String(results[0].id);
       console.log(results);
-      
+
       // if queue list doesn't have songs in it, set the url directly to the playing video; otherwise, add it to the queue
-      if (queueList.length == 0){
+      if (queueList.length == 0) {
         setVideoUrl("https://www.youtube.com/watch?v=" + videoID);
         socket.emit('videoUrl', "https://www.youtube.com/watch?v=" + videoID, () => setVideoUrl("https://www.youtube.com/watch?v=" + videoID))
         queueList.push(videoID);
         //queueExtended.push(Object.values(results[0]));
         //console.log("queueLength:" + queueList.length);
-      }else{
+      } else {
         //queueList.push(Object.values(results[0]));
         queueList.push(videoID);
       }
@@ -171,53 +172,61 @@ function Dashboard() {
     }
   };
 
+  const renderTooltip = props => (
+    <Tooltip {...props}>Copied!</Tooltip>
+  );
+
   return (
-    <div>
+    <div className={styles.backgroundColor}>
       <Container>
-        <div>
-          <h1>Rhythm Room: #{room}</h1>
-        </div>
-
-        <Card className="mb-4">
-          <Card.Body>
-            <Card.Title><strong>Listeners</strong></Card.Title>
-            <ListGroup variant="flush">
-            {users.map((user, i) => <ListGroup.Item>{user.name}</ListGroup.Item>)}
-            </ListGroup>
-          </Card.Body>
-        </Card>
-
-        <div>
-          <Row className="mb-5">
-            <Col sm={5} >
-              <Form.Label htmlFor="songURL">Enter Song URL: </Form.Label>
-              <Form.Control placeholder="Song URL" id="songURL" value={videoUrl} onChange={(e) => {setVideoUrl(e.target.value); socket.emit('videoUrl', e.target.value, () => setVideoUrl(e.target.value))}}/>
-            </Col>
-            <Col sm={5}>
-              <form action="#" onSubmit={(e) => { searchYT(); e.preventDefault(); }}>
-                <Form.Group>
-                  <Form.Label htmlFor="songSearch">Search for a song: </Form.Label>
-                  <InputGroup hasValidation>
-                    <Form.Control placeholder="Song name" className={styles.leftInput} type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)} />
-                    <Button className={styles.rightInput} variant="primary" type="submit" >Add to Queue</Button>
-                  </InputGroup>
-                </Form.Group>
-              </form>
-            </Col>
-          </Row>
-
-          <div className="responsive">
-            <YouTube
-              videoId={videoCode}
-              containerClassName="embed-youtube"
-              onStateChange={(e) => checkElapsedTime(e)}
-              opts={opts}
-            />
+        <div className={styles.parent}>
+          <div className={styles.flex}>
+            <h1 className="my-0 py-0 mb-2">Rhythm Room: #{room}</h1>
+            <OverlayTrigger placement="top" trigger='click' overlay={renderTooltip}>
+              <Button style={{display: "block"}}className="mb-4" onClick={() => { navigator.clipboard.writeText(`https://rhythmroom.herokuapp.com/dashboard?name=listener&room=${room}`) }}>Copy Link</Button>
+            </OverlayTrigger>
+            <Form.Label htmlFor="songURL">Enter Song URL: </Form.Label>
+            <Form.Control placeholder="Song URL" id="songURL" value={videoUrl} onChange={(e) => { setVideoUrl(e.target.value); socket.emit('videoUrl', e.target.value, () => setVideoUrl(e.target.value)) }} />
+            <form action="#" onSubmit={(e) => { searchYT(); e.preventDefault(); }}>
+              <Form.Group className='mb-4'>
+                <Form.Label htmlFor="songSearch" className='pt-4'>Search for a song: </Form.Label>
+                <InputGroup hasValidation>
+                  <Form.Control placeholder="Song name" className={styles.leftInput} type="text" value={videoSearch} onChange={(e) => searchVideoUrl(e.target.value)} />
+                  <Button className={styles.rightInput} variant="primary" type="submit" >Add to Queue</Button>
+                </InputGroup>
+              </Form.Group>
+            </form>
+            <div>
+              <YouTube
+                videoId={videoCode}
+                containerClassName="embed-youtube"
+                onStateChange={(e) => checkElapsedTime(e)}
+                opts={opts}
+              />
+            </div>
           </div>
+
+          <div className={styles.flex}>
+
+            <InputGroup hasValidation className="mb-4">
+              <Form.Control placeholder="New Name" className={styles.leftInput} type="text" onChange='' />
+              <Button className={styles.rightInput} variant="primary" type="submit" >Change name</Button>
+            </InputGroup>
+
+            <Card className="mb-4">
+              <Card.Body>
+                <Card.Title><strong>Listeners</strong></Card.Title>
+                <ListGroup variant="flush">
+                  {users.map((user, i) => <ListGroup.Item>{user.name}</ListGroup.Item>)}
+                </ListGroup>
+              </Card.Body>
+            </Card>
+          </div>
+
         </div>
 
-      </Container>
-    </div>
+      </Container >
+    </div >
   );
 }
 
@@ -235,7 +244,7 @@ export default Dashboard;
                 return <li>{song}</li>;
               })}
               </li>
-              
+
             );
           })}
 */
