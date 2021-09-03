@@ -29,7 +29,7 @@ class navbar extends React.Component {
                             <Nav.Item className="px-4">
                                 <Nav.Link as={Link} to='/about'>About</Nav.Link>
                             </Nav.Item>
-                            <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Create Room</button>
+                            <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Join Room</button>
                             {this.state.isOpen ?
                                 <ModalForm
                                 closeModal={this.closeModal}

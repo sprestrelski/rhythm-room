@@ -60,12 +60,4 @@ io.on('connection', (socket) => {
 
 app.use(router);
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, '../public/index.html'), function(err) {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
-
 server.listen(PORT, () => console.log(`Server has started on port ${PORT}`));

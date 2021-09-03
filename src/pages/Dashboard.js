@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
 import styles from './Dashboard.module.css'
 import YouTube from "react-youtube";
-import { Container, Button, Form, Row, Col, InputGroup, Card, ListGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Container, Button, Form, InputGroup, Card, ListGroup } from 'react-bootstrap';
 import { BlockList } from "net";
 import { Helmet } from 'react-helmet';
 var search = require('youtube-search');
@@ -175,10 +175,6 @@ function Dashboard() {
     }
   };
 
-  const renderTooltip = props => (
-    <Tooltip {...props}>Copied!</Tooltip>
-  );
-
   return (
     <div className={styles.backgroundColor}>
       <Helmet>
@@ -188,9 +184,6 @@ function Dashboard() {
         <div className={styles.parent}>
           <div className={styles.flex}>
             <h1 className="my-0 py-0 mb-2">Rhythm Room: #{room}</h1>
-            <OverlayTrigger placement="top" trigger='click' overlay={renderTooltip}>
-              <Button style={{ display: "block" }} className="mb-4" onClick={() => { navigator.clipboard.writeText(`https://rhythmroom.herokuapp.com/dashboard?name=listener&room=${room}`) }}>Copy Link</Button>
-            </OverlayTrigger>
             <Form.Label htmlFor="songURL">Enter Song URL: </Form.Label>
             <Form.Control placeholder="Song URL" id="songURL" value={videoUrl} onChange={(e) => { setVideoUrl(e.target.value); socket.emit('videoUrl', e.target.value, () => setVideoUrl(e.target.value)) }} />
             <form action="#" onSubmit={(e) => { searchYT(); e.preventDefault(); }}>

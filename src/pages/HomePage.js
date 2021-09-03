@@ -48,7 +48,7 @@ class App extends React.Component {
               </div>
               <div className={styles.box}>
                 <h1>Listen with your friends</h1>
-                <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Create Room</button>
+                <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Join Room</button>
                 {this.state.isOpen ?
                   <ModalForm
                     closeModal={this.closeModal}
@@ -99,7 +99,7 @@ class App extends React.Component {
                 <h1>About</h1>
                 <p>Rhythm Room is a web app dedicated to listening to and sharing the spis-iest beats with your friends.</p>
                 <p>Want a break from the ads?</p>
-                <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Create Room</button>
+                <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Join Room</button>
                 {this.state.isOpen ?
                   <ModalForm
                     closeModal={this.closeModal}
