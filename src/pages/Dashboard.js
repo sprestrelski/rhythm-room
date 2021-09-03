@@ -114,6 +114,19 @@ function Dashboard() {
     catch (error) { }
 
   }
+  const endVideo = (e) => {
+    try {
+      // change the currently playing video to the next one in the list. if there is none, oh well
+      
+      videoSearch = queueList[1];
+      console.log(videoSearch);
+      setVideoUrl("https://www.youtube.com/watch?v=" + videoSearch);
+      socket.emit('videoUrl', "https://www.youtube.com/watch?v=" + videoSearch, () => setVideoUrl("https://www.youtube.com/watch?v=" + videoSearch))
+      console.log('goodbye im here')
+    } catch (error) {
+      console.log("yikes bro");
+    }
+  }
 
   // uses youtube-search to grab the first search result from youtube for the query
   function searchYT() {
@@ -146,7 +159,7 @@ function Dashboard() {
   // check if the video has finished
   const checkElapsedTime = (e) => {
     //console.log("playerState: " + e.target.playerInfo.playerState);
-    const duration = e.target.getDuration();
+    const duration = e.target.getDuration();  
     const currentTime = e.target.getCurrentTime();
     if (e.target.getPlayerState() == 0) {
       console.log("song ended");
@@ -222,6 +235,9 @@ function Dashboard() {
                 </ListGroup>
               </Card.Body>
             </Card>
+
+            
+            <Button style={{ display: "block" }} className="mb-4" onClick={(e) => endVideo(e.target.value)}>Skip</Button>
           </div>
 
         </div>
