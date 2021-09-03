@@ -46,7 +46,7 @@ export default class ModalForm extends Component {
           <Modal.Footer>
             <Link onClick={event => (!this.state.name || !this.state.roomName) ? event.preventDefault() : null} to={`/dashboard?name=${this.state.name}&room=${this.state.roomName}`}>
               <Button type="submit" onClick={this.handleSubmit}>
-                Create Room
+                Join Room
               </Button>
             </Link>
           </Modal.Footer>

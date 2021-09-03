@@ -21,17 +21,15 @@ function AboutPage() {
           </div>
           <div className={styles.box}>
             <h1>About Us</h1>
-            <p>Rhythm Room is a project thought up by Sam and Jeremy. While we both loved listening to music, there is not yet a service that allows you to listen to music with other people without external platforms or subscriptions. Thus, we made Rhythm Room.</p>
+            <p>Rhythm Room enables you to listen to music and watch videos with your friends synchronously. Create a room, invite some friends, and queue up a song from your favorite artist.</p>
             <h1 className={"pt-4"}>Our Stack</h1>
-            <ul className={styles.emoji}>
-              <li className={styles.emoji}> Application Framework: 			Express </li>
-              <li>User Interface: 					React</li>
-              <li>Web server:					Node.js</li>
-              <li>Hosting platform:				Heroku</li>
-              <li>Socket.io</li>
-              <li>YouTube iFrame API</li>
-
-            </ul>
+            <ol>
+              <li style={{paddingLeft: "1em"}}> The YouTube iFrame API is used to create an embedded player, which has customizable player controls and parameters.</li>
+              <li style={{paddingLeft: "1em"}}>youtube-search is used to search for new songs, querying the user input and returning the video ID of the first search result. React states are used to update the text fields once the URL and video ID have been found.</li>
+              <li style={{paddingLeft: "1em"}}>If a song is currently playing, newly queued songs are added to an array and played once the current video ends.</li>
+              <li style={{paddingLeft: "1em"}}>Socket.io is used to enable real-time event-based communication between the browser and server, allowing users to make and join rooms. Room links are generating using the name of the user and the name of the room.</li>
+              <li style={{paddingLeft: "1em"}}>Socket.io is used to syncing audio and video across multiple clients.</li>
+            </ol>
           </div>
         </div>
         <div className={styles.parent}>

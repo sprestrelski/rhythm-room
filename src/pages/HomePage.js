@@ -98,7 +98,7 @@ class App extends React.Component {
               <div className={styles.box}>
                 <h1>About</h1>
                 <p>Rhythm Room is a web app dedicated to listening to and sharing the spis-iest beats with your friends.</p>
-                <p>Want a break from the ads?</p>
+                <p><a href="https://github.com/sprestrelski/rhythm-room" className={styles.link}>Sneak a peek at our code here</a></p>
                 <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Join Room</button>
                 {this.state.isOpen ?
                   <ModalForm
