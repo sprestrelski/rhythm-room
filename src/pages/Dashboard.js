@@ -183,7 +183,7 @@ function Dashboard() {
           <div className={styles.flex}>
             <h1 className="my-0 py-0 mb-2">Rhythm Room: #{room}</h1>
             <OverlayTrigger placement="top" trigger='click' overlay={renderTooltip}>
-              <Button style={{display: "block"}}className="mb-4" onClick={() => { navigator.clipboard.writeText(`https://rhythmroom.herokuapp.com/dashboard?name=listener&room=${room}`) }}>Copy Link</Button>
+              <Button style={{ display: "block" }} className="mb-4" onClick={() => { navigator.clipboard.writeText(`https://rhythmroom.herokuapp.com/dashboard?name=listener&room=${room}`) }}>Copy Link</Button>
             </OverlayTrigger>
             <Form.Label htmlFor="songURL">Enter Song URL: </Form.Label>
             <Form.Control placeholder="Song URL" id="songURL" value={videoUrl} onChange={(e) => { setVideoUrl(e.target.value); socket.emit('videoUrl', e.target.value, () => setVideoUrl(e.target.value)) }} />
@@ -224,9 +224,8 @@ function Dashboard() {
           </div>
 
         </div>
-
-      </Container >
-    </div >
+      </Container>
+    </div>
   );
 }
 
