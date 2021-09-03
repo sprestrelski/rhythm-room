@@ -11,6 +11,7 @@ import marshmello from '../assets/marshmello.svg'
 import friends from '../assets/friends.svg'
 import cat from '../assets/cat.svg'
 import coding from '../assets/coding.svg'
+import { Helmet } from 'react-helmet';
 
 class App extends React.Component {
   state = {
@@ -36,6 +37,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <Helmet>
+          <title>Home | Rhythm Room</title>
+        </Helmet>
         <div className={styles.section1}>
           <Container>
             <div className={styles.parent}>
@@ -44,16 +48,15 @@ class App extends React.Component {
               </div>
               <div className={styles.box}>
                 <h1>Listen with your friends</h1>
-                  <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Create Room</button>
-                  {this.state.isOpen ?
-                    <ModalForm
-                      closeModal={this.closeModal}
-                      isOpen={this.state.isOpen}
-                      handleSubmit={this.handleSubmit}
-                    />
-                    : null
-                  }
-                <a class="px-4">Join Room</a>
+                <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Create Room</button>
+                {this.state.isOpen ?
+                  <ModalForm
+                    closeModal={this.closeModal}
+                    isOpen={this.state.isOpen}
+                    handleSubmit={this.handleSubmit}
+                  />
+                  : null
+                }
               </div>
             </div>
           </Container>
@@ -97,14 +100,14 @@ class App extends React.Component {
                 <p>Rhythm Room is a web app dedicated to listening to and sharing the spis-iest beats with your friends.</p>
                 <p>Want a break from the ads?</p>
                 <button type="button" class="btn btn-link" className={styles.button} onClick={this.openModal}>Create Room</button>
-                  {this.state.isOpen ?
-                    <ModalForm
-                      closeModal={this.closeModal}
-                      isOpen={this.state.isOpen}
-                      handleSubmit={this.handleSubmit}
-                    />
-                    : null
-                  }
+                {this.state.isOpen ?
+                  <ModalForm
+                    closeModal={this.closeModal}
+                    isOpen={this.state.isOpen}
+                    handleSubmit={this.handleSubmit}
+                  />
+                  : null
+                }
               </div>
             </div>
           </Container>

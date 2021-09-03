@@ -12,12 +12,12 @@ export default class ModalForm extends Component {
     super(props);
     this.state = { name: null, roomName: null }
   }
+  
+  closeModal = () => this.setState({ isOpen: false });
 
-  /*handleSubmit = (event) => {
-    console.log(this.state.roomName)
-    event.preventDefault();
-    alert("You are submitting " + this.state.name + this.state.roomName);
-  }*/
+  handleSubmit = (event) => {
+    this.props.closeModal()
+  };
 
   handleChangeName = (event) => {
     this.setState({ name: event.target.value });

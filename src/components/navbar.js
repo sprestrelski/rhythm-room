@@ -34,7 +34,7 @@ class navbar extends React.Component {
                                 <ModalForm
                                 closeModal={this.closeModal}
                                 isOpen={this.state.isOpen}
-                                handleSubmit={this.handleSubmit}
+                                handleSubmit={this.closeModal}
                                 />
                                 : null
                             }

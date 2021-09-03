@@ -23,7 +23,6 @@ io.on('connection', (socket) => {
     socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined #${user.room}` })
     socket.join(user.room);
     io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) })
-
     callback();
   });
 
@@ -60,5 +59,13 @@ io.on('connection', (socket) => {
 });
 
 app.use(router);
+
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 server.listen(PORT, () => console.log(`Server has started on port ${PORT}`));

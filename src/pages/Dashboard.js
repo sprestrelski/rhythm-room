@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
 import io from 'socket.io-client';
 
+import { Link } from 'react-router-dom';
 import styles from './Dashboard.module.css'
 import YouTube from "react-youtube";
 import { Container, Button, Form, Row, Col, InputGroup, Card, ListGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { BlockList } from "net";
+import { Helmet } from 'react-helmet';
 var search = require('youtube-search');
 var queueList = [];
 var queueExtended = [];
@@ -57,6 +59,7 @@ function Dashboard() {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
+  const [newName, setNewName] = useState('');
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
 
@@ -116,7 +119,7 @@ function Dashboard() {
   function searchYT() {
     var searchOpts = {
       maxResults: 1,
-      key: "AIzaSyDfSmuXOfLmNURbPDIcgV5UGvrZhEZtIKo"
+      key: process.env.REACT_APP_YT_API_KEY
     };
 
     search(videoSearch, searchOpts, function (err, results, pgInfo) {
@@ -178,6 +181,9 @@ function Dashboard() {
 
   return (
     <div className={styles.backgroundColor}>
+      <Helmet>
+        <title>#{room} | Rhythm Room</title>
+      </Helmet>
       <Container>
         <div className={styles.parent}>
           <div className={styles.flex}>
@@ -209,8 +215,10 @@ function Dashboard() {
           <div className={styles.flex}>
 
             <InputGroup hasValidation className="mb-4">
-              <Form.Control placeholder="New Name" className={styles.leftInput} type="text" onChange='' />
-              <Button className={styles.rightInput} variant="primary" type="submit" >Change name</Button>
+              <Form.Control placeholder="New Name" className={styles.leftInput} type="text" onChange={(e) => setNewName(e.target.value)} />
+              <Link to={'/dashboard?name='+newName+'&room='+room}>
+                <Button className={styles.rightInput} variant="primary" type="submit" >Change name</Button>
+              </Link>
             </InputGroup>
 
             <Card className="mb-4">

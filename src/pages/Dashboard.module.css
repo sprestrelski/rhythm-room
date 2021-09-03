@@ -16,6 +16,13 @@
     background-color: #F3F4F6;
 }
 
+@media only screen and (max-width: 600px) {
+    .backgroundColor {
+        padding: 0;
+        background-color: #F3F4F6;
+    }
+  }
+
 .parent {
     display: flex;
     flex-direction: row;
@@ -24,4 +31,9 @@
 }
 .flex { 
     margin: 1rem;
+}
+
+iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
 }

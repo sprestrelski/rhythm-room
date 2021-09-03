@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Button } from 'react-bootstrap';
+import { Helmet } from 'react-helmet';
 
 import styles from "./AboutPage.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -10,6 +11,9 @@ import programming_sam from '../assets/programming_sam.svg'
 function AboutPage() {
   return (
     <div>
+      <Helmet>
+        <title>About | Rhythm Room</title>
+      </Helmet>
       <Container>
         <div className={styles.parent}>
           <div className={styles.box}>
